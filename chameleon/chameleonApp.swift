@@ -12,6 +12,8 @@ struct chameleonApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+//            BluetoothView()
+//            lastView()
         }
     }
 }
