@@ -21,6 +21,7 @@ class BluetoothManager: NSObject {
     var onDeviceDiscovered: ((CBPeripheral) -> Void)?
     var isLoading: Bool = false
     var nowState: ChameleonState = .normal
+    var beforeConnectPeripheral: Bool = false
     
     override init() {
         super.init()
@@ -63,6 +64,7 @@ extension BluetoothManager: CBCentralManagerDelegate {
             self.peripheral = peripheral
             centralManager?.connect(peripheral, options: nil)
             isLoading = false
+            beforeConnectPeripheral = true
         }
     }
     
@@ -161,10 +163,13 @@ extension BluetoothManager: CBPeripheralDelegate {
             if let value = characteristic.value {
                 if let stringValue = String(data: value, encoding: .utf8) {
                     print("getvalue: \(stringValue)")
+                    print("type: \(type(of: stringValue))")
                     if stringValue == "0" {
-                        nowState = .even
+                        print("value: \(stringValue)")
+                        nowState = .even // 好意を持っている
                     } else {
-                        nowState = .odd
+                        print("value: \(stringValue)")
+                        nowState = .odd // 保護色になる。
                     }
                 }
             }
@@ -191,9 +196,12 @@ extension BluetoothManager: CBPeripheralDelegate {
         if let value = characteristic.value {
             if let stringValue = String(data: value, encoding: .utf8) {
                 print("getvalue: \(stringValue)")
+                print("\(type(of: stringValue))")
                 if stringValue == "0" {
+                    print("getvalue: \(stringValue)")
                     nowState = .even
-                } else {
+                } else if stringValue == "1" {
+                    print("getvalue: \(stringValue)")
                     nowState = .odd
                 }
             }

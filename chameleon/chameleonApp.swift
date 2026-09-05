@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct chameleonApp: App {
+    @State var bluetoothManager: BluetoothManager = BluetoothManager()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if !bluetoothManager.beforeConnectPeripheral {
+                BeforeConnectView(bluetoothManager: bluetoothManager)
+            } else {
+                ContentView(bluetoothManager: bluetoothManager)
+            }
+
 //            BluetoothView()
 //            lastView()
         }
